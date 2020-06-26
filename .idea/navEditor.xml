@@ -8,7 +8,7 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="currentWeatherFragment2">
+                  <entry key="currentWeatherFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -32,7 +32,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="futureListWeatherFragment2">
+                  <entry key="futureListWeatherFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
