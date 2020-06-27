@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data
+package ru.kazakovanet.synoptic.data.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -17,7 +17,7 @@ import ru.kazakovanet.synoptic.data.network.response.CurrentWeatherResponse
 const val API_KEY = "52b43b94b77995280641d32ad8b5d21e"
 // http://api.weatherstack.com/current?access_key=52b43b94b77995280641d32ad8b5d21e&query=New%20York
 
-interface WeatherApiService {
+interface WeatherStackApiService {
 
     @GET("current")
     fun getCurrentWeather(
@@ -25,12 +25,16 @@ interface WeatherApiService {
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
-        operator fun invoke(): WeatherApiService {
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor
+        ): WeatherStackApiService {
             val requestInterceptor = Interceptor { chain ->
                 val url = chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter("access_key", API_KEY)
+                    .addQueryParameter("access_key",
+                        API_KEY
+                    )
                     .build()
                 val request = chain.request()
                     .newBuilder()
@@ -40,6 +44,7 @@ interface WeatherApiService {
             }
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()
@@ -48,7 +53,7 @@ interface WeatherApiService {
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(WeatherApiService::class.java)
+                .create(WeatherStackApiService::class.java)
         }
     }
 }
