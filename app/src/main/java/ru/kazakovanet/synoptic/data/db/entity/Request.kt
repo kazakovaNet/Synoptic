@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.response
+package ru.kazakovanet.synoptic.data.db.entity
 
 data class Request(
     val language: String,

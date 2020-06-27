@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.kazakovanet.synoptic.data.response.CurrentWeatherResponse
+import ru.kazakovanet.synoptic.data.network.response.CurrentWeatherResponse
 
 /**
  * Created by NKazakova on 26.06.2020.
@@ -22,7 +22,6 @@ interface WeatherApiService {
     @GET("current")
     fun getCurrentWeather(
         @Query("query") location: String
-//        @Query("language") language: String = "ru"
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
