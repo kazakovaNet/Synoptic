@@ -42,7 +42,7 @@ class SynopticRepositoryImpl(
     }
 
     private suspend fun fetchCurrentWeather() {
-        weatherNetworkDataSource.fetchCurrentWeather("Moscow")
+        weatherNetworkDataSource.fetchCurrentWeather("London")
     }
 
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {

@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import okhttp3.Interceptor
 import okhttp3.Response
-import ru.kazakovanet.synoptic.NoConnectivityException
+import ru.kazakovanet.synoptic.internal.NoConnectivityException
 
 class ConnectivityInterceptorImpl(
     context: Context

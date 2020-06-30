@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic
+package ru.kazakovanet.synoptic.internal
 
 import java.io.IOException
 
