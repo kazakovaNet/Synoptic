@@ -8,5 +8,5 @@ import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
  */
 
 interface SynopticRepository {
-    suspend fun getCurrentWeather(): LiveData<out CurrentWeatherEntry>
+    suspend fun getCurrentWeather(unitSystem: String): LiveData<out CurrentWeatherEntry>
 }

@@ -22,9 +22,9 @@ class SynopticRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeather(): LiveData<out CurrentWeatherEntry> {
+    override suspend fun getCurrentWeather(unitSystem: String): LiveData<out CurrentWeatherEntry> {
         return withContext(Dispatchers.IO) {
-            initWeatherData()
+            initWeatherData(unitSystem)
             currentWeatherDao.getWeather()
         }
     }
@@ -35,15 +35,15 @@ class SynopticRepositoryImpl(
         }
     }
 
-    private suspend fun initWeatherData() {
+    private suspend fun initWeatherData(unitSystem: String) {
         // todo
         if (isFetchCurrentNeeded(ZonedDateTime.now().minusHours(1)))
-            fetchCurrentWeather()
+            fetchCurrentWeather(unitSystem)
     }
 
-    private suspend fun fetchCurrentWeather() {
+    private suspend fun fetchCurrentWeather(unitSystem: String) {
         // todo
-        weatherNetworkDataSource.fetchCurrentWeather("London", "m")
+        weatherNetworkDataSource.fetchCurrentWeather("London", unitSystem)
     }
 
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {
