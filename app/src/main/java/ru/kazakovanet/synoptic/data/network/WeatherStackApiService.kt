@@ -22,6 +22,8 @@ interface WeatherStackApiService {
     @GET("current")
     fun getCurrentWeather(
         @Query("query") location: String
+//        ,
+//        @Query("units") units: String
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
