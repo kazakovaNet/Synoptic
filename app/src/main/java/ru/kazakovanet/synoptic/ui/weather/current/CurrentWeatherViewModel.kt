@@ -7,7 +7,7 @@ import ru.kazakovanet.synoptic.internal.UnitSystem
 import ru.kazakovanet.synoptic.internal.lazyDeferred
 
 class CurrentWeatherViewModel(
-    private val repository: SynopticRepository,
+    private val synopticRepository: SynopticRepository,
     unitProvider: UnitProvider
 ) : ViewModel() {
 
@@ -17,6 +17,10 @@ class CurrentWeatherViewModel(
         get() = unitSystem == UnitSystem.METRIC
 
     val weather by lazyDeferred {
-        repository.getCurrentWeather(unitSystem.designation)
+        synopticRepository.getCurrentWeather(unitSystem.designation)
+    }
+
+    val weatherLocation by lazyDeferred {
+        synopticRepository.getWeatherLocation()
     }
 }

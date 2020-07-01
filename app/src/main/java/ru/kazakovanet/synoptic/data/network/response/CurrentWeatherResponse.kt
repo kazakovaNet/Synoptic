@@ -2,12 +2,12 @@ package ru.kazakovanet.synoptic.data.network.response
 
 import com.google.gson.annotations.SerializedName
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
-import ru.kazakovanet.synoptic.data.db.entity.Location
+import ru.kazakovanet.synoptic.data.db.entity.WeatherLocation
 import ru.kazakovanet.synoptic.data.db.entity.Request
 
 data class CurrentWeatherResponse(
     @SerializedName("current")
     val currentWeatherEntry: CurrentWeatherEntry,
-    val location: Location,
+    val location: WeatherLocation,
     val request: Request
 )

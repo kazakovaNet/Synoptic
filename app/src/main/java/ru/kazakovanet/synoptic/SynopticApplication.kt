@@ -11,9 +11,10 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import ru.kazakovanet.synoptic.data.db.CurrentWeatherDao
 import ru.kazakovanet.synoptic.data.db.SynopticDatabase
 import ru.kazakovanet.synoptic.data.network.*
+import ru.kazakovanet.synoptic.data.provider.LocationProvider
+import ru.kazakovanet.synoptic.data.provider.LocationProviderImpl
 import ru.kazakovanet.synoptic.data.provider.UnitProvider
 import ru.kazakovanet.synoptic.data.provider.UnitProviderImpl
 import ru.kazakovanet.synoptic.data.repository.SynopticRepository
@@ -35,11 +36,20 @@ class SynopticApplication : Application(), KodeinAware {
                 "synoptic.db"
             ).build()
         }
-        bind<CurrentWeatherDao>() with singleton { instance<SynopticDatabase>().currentWeatherDao() }
+        bind() from singleton { instance<SynopticDatabase>().currentWeatherDao() }
+        bind() from singleton { instance<SynopticDatabase>().weatherLocationDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<SynopticRepository>() with singleton { SynopticRepositoryImpl(instance(), instance()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind<SynopticRepository>() with singleton {
+            SynopticRepositoryImpl(
+                currentWeatherDao = instance(),
+                weatherLocationDao = instance(),
+                weatherNetworkDataSource = instance(),
+                locationProvider = instance()
+            )
+        }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
     }
