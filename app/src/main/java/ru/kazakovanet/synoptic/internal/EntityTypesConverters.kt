@@ -8,9 +8,9 @@ import androidx.room.TypeConverter
 object ListToStringConverter {
     @TypeConverter
     @JvmStatic
-    public fun fromList(list: List<String>): String = list.joinToString(separator = ",")
+    fun fromList(list: List<String>): String = list.joinToString(separator = ",")
 
     @TypeConverter
     @JvmStatic
-    public fun toList(data: String): List<String> = data.split(",")
+    fun toList(data: String): List<String> = data.split(",")
 }

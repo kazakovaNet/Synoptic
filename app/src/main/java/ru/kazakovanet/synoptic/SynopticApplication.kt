@@ -1,8 +1,10 @@
 package ru.kazakovanet.synoptic
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
 import androidx.room.Room
+import com.google.android.gms.location.LocationServices
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -41,7 +43,8 @@ class SynopticApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind<SynopticRepository>() with singleton {
             SynopticRepositoryImpl(
                 currentWeatherDao = instance(),
