@@ -12,7 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        android:theme="@style/ToolbarTheme" />
+        app:subtitle="Today"
+        app:subtitleTextColor="#EEEEEE"
+        app:title="Tula"
+        app:titleTextColor="#FFFFFF" />
 
     <fragment
         android:id="@+id/nav_host_fragment"
