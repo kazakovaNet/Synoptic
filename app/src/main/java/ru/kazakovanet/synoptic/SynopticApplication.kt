@@ -14,7 +14,12 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import ru.kazakovanet.synoptic.data.db.SynopticDatabase
-import ru.kazakovanet.synoptic.data.network.*
+import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
+import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
+import ru.kazakovanet.synoptic.data.network.WeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.WeatherNetworkDataSourceImpl
+import ru.kazakovanet.synoptic.data.network.api.openweathermap.OpenWeatherMapApiService
+import ru.kazakovanet.synoptic.data.network.api.weatherstack.WeatherStackApiService
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
 import ru.kazakovanet.synoptic.data.provider.LocationProviderImpl
 import ru.kazakovanet.synoptic.data.provider.UnitProvider
@@ -42,7 +47,10 @@ class SynopticApplication : Application(), KodeinAware {
         bind() from singleton { instance<SynopticDatabase>().weatherLocationDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
-        bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
+        bind() from singleton { OpenWeatherMapApiService(instance()) }
+        bind<WeatherNetworkDataSource>() with singleton {
+            WeatherNetworkDataSourceImpl(instance(), instance())
+        }
         bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
         bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind<SynopticRepository>() with singleton {

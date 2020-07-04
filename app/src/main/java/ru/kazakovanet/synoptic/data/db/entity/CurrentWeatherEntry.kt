@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import ru.kazakovanet.synoptic.internal.ListToStringConverter
+import ru.kazakovanet.synoptic.data.db.ListToStringConverter
 
 const val CURRENT_WEATHER_ID = 0
 
