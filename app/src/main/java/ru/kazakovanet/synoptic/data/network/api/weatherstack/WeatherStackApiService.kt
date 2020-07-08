@@ -9,14 +9,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
+import ru.kazakovanet.synoptic.data.network.api.WEATHER_STACK_API_KEY
 import ru.kazakovanet.synoptic.data.network.response.current.CurrentWeatherResponse
 
 /**
  * Created by NKazakova on 26.06.2020.
  */
 
-const val WEATHER_STACK_API_KEY = "52b43b94b77995280641d32ad8b5d21e"
-// http://api.weatherstack.com/current?access_key=52b43b94b77995280641d32ad8b5d21e&query=New%20York
+// http://api.weatherstack.com/current?access_key=***&query=New%20York
 
 interface WeatherStackApiService {
 

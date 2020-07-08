@@ -133,3 +133,6 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio
+
+#APIKeys
+app/src/main/java/ru/kazakovanet/synoptic/data/network/api/APIKeys.kt

@@ -9,15 +9,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
+import ru.kazakovanet.synoptic.data.network.api.OPEN_WEATHER_MAP_APP_ID
 import ru.kazakovanet.synoptic.data.network.response.future.FutureWeatherResponse
 
 /**
  * Created by NKazakova on 02.07.2020.
  */
 
-const val OPEN_WEATHER_MAP_APP_ID = "acf48084f5ac6eaf0058e32f1c004e6f"
 const val EXCLUDE_QUERY = "current,minutely,hourly"
-// https://api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&exclude=current,minutely,hourly&appid=acf48084f5ac6eaf0058e32f1c004e6f
+// https://api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&exclude=current,minutely,hourly&appid=***
 
 interface OpenWeatherMapApiService {
 
