@@ -11,6 +11,7 @@ interface FutureWeatherNetworkDataSource {
 
     suspend fun fetchFutureWeather(
         lat: Double,
-        lon: Double
+        lon: Double,
+        units: String
     )
 }

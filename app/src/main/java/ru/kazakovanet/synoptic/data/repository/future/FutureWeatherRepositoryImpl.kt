@@ -6,7 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.LocalDate
-import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.ZoneId
 import ru.kazakovanet.synoptic.data.db.FutureWeatherDao
 import ru.kazakovanet.synoptic.data.db.FutureWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
@@ -29,17 +29,23 @@ class FutureWeatherRepositoryImpl(
         }
     }
 
-    override suspend fun getFutureWeatherList(startDate: LocalDate): LiveData<out List<FutureWeatherEntry>> {
+    override suspend fun getFutureWeatherList(
+        startDate: LocalDate,
+        unitSystem: String
+    ): LiveData<out List<FutureWeatherEntry>> {
         return withContext(Dispatchers.IO) {
-            initWeatherData()
-            futureWeatherDao.getWeatherForecast(startDate.toEpochDay())
+            initWeatherData(unitSystem)
+            // TODO: 08.07.2020  
+            val epochSecond = getEpochSecond(startDate, "America/Chicago")
+            futureWeatherDao.getWeatherForecast(epochSecond)
         }
     }
 
     private fun persistFetchedFutureWeather(fetchedWeather: FutureWeatherResponse) {
 
         fun deleteOldForecastData() {
-            val today = LocalDate.now().toEpochDay()
+            val today =
+                getEpochSecond(LocalDate.now(), fetchedWeather.futureWeatherLocation.timezoneId)
             futureWeatherDao.deleteOldEntries(today)
         }
 
@@ -50,32 +56,39 @@ class FutureWeatherRepositoryImpl(
         }
     }
 
-    private suspend fun initWeatherData() {
+    private suspend fun initWeatherData(unitSystem: String) {
         val location = futureWeatherLocationDao.getLocationNonLive()
 
         if (location == null || locationProvider.hasLocationChanged(location)) {
-            fetchFutureWeather()
+            fetchFutureWeather(unitSystem)
             return
         }
 
-        if (isFetchFutureNeeded(location.zonedDateTime))
-            fetchFutureWeather()
+        if (isFetchFutureNeeded(location.timezoneId))
+            fetchFutureWeather(unitSystem)
     }
 
-    private suspend fun fetchFutureWeather() {
+    private suspend fun fetchFutureWeather(unitSystem: String) {
         // TODO: 07.07.2020
         val lat = 33.44
         val lon = -94.04
-        dataSource.fetchFutureWeather(lat, lon)
+        dataSource.fetchFutureWeather(lat, lon, unitSystem)
     }
 
-    private fun isFetchFutureNeeded(lastFetchTime: ZonedDateTime): Boolean {
-        val today = LocalDate.now().toEpochDay()
+    private fun isFetchFutureNeeded(timezoneId: String): Boolean {
+        val today = getEpochSecond(LocalDate.now(), timezoneId)
         val futureWeatherCount = futureWeatherDao.countFutureWeather(today)
         return futureWeatherCount < FORECAST_DAYS_COUNT
     }
 
+    private fun getEpochSecond(localDate: LocalDate, timezoneId: String): Long {
+        val zoneId = ZoneId.of(timezoneId)
+        return localDate.atStartOfDay(zoneId).toEpochSecond()
+    }
+
     override suspend fun getFutureWeatherLocation(): LiveData<FutureWeatherLocation> {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO) {
+            futureWeatherLocationDao.getLocation()
+        }
     }
 }

@@ -16,10 +16,10 @@ import org.kodein.di.generic.singleton
 import ru.kazakovanet.synoptic.data.db.SynopticDatabase
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
-import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
-import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.network.api.openweathermap.OpenWeatherMapApiService
 import ru.kazakovanet.synoptic.data.network.api.weatherstack.WeatherStackApiService
+import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
@@ -85,7 +85,12 @@ class SynopticApplication : Application(), KodeinAware {
         }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
-        bind() from provider { FutureListWeatherViewModelFactory(repository = instance()) }
+        bind() from provider {
+            FutureListWeatherViewModelFactory(
+                repository = instance(),
+                unitProvider = instance()
+            )
+        }
     }
 
     override fun onCreate() {

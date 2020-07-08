@@ -17,10 +17,10 @@ class FutureWeatherNetworkDataSourceImpl(
     override val downloadedFutureWeather: LiveData<FutureWeatherResponse>
         get() = _downloadedFutureWeather
 
-    override suspend fun fetchFutureWeather(lat: Double, lon: Double) {
+    override suspend fun fetchFutureWeather(lat: Double, lon: Double, units: String) {
         try {
             val fetchedFutureWeather =
-                openWeatherMapApiService.getFutureWeather(lat, lon)
+                openWeatherMapApiService.getFutureWeather(lat, lon, units)
                     .await()
             _downloadedFutureWeather.postValue(fetchedFutureWeather)
         } catch (e: NoConnectivityException) {

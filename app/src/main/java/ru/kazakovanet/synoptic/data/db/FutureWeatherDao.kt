@@ -16,12 +16,12 @@ interface FutureWeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsert(futureWeatherEntries: List<FutureWeatherEntry>)
 
-    @Query("select * from future_weather where date(date) >= date(:startDate)")
+    @Query("select * from future_weather where date >= :startDate")
     fun getWeatherForecast(startDate: Long): LiveData<List<FutureWeatherEntry>>
 
-    @Query("select count(id) from future_weather where date(date) >= date(:startDate)")
+    @Query("select count(id) from future_weather where date >= :startDate")
     fun countFutureWeather(startDate: Long): Int
 
-    @Query("delete from future_weather where date(date) < date(:firstDateToKeep)")
+    @Query("delete from future_weather where date < :firstDateToKeep")
     fun deleteOldEntries(firstDateToKeep: Long)
 }

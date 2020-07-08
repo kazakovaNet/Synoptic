@@ -2,7 +2,6 @@ package ru.kazakovanet.synoptic.data.repository.future
 
 import androidx.lifecycle.LiveData
 import org.threeten.bp.LocalDate
-import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherLocation
 
@@ -11,6 +10,10 @@ import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherLocation
  */
 
 interface FutureWeatherRepository {
-    suspend fun getFutureWeatherList(startDate: LocalDate): LiveData<out List<FutureWeatherEntry>>
+    suspend fun getFutureWeatherList(
+        startDate: LocalDate,
+        unitSystem: String
+    ): LiveData<out List<FutureWeatherEntry>>
+
     suspend fun getFutureWeatherLocation(): LiveData<FutureWeatherLocation>
 }

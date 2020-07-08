@@ -24,7 +24,8 @@ interface OpenWeatherMapApiService {
     @GET("onecall")
     fun getFutureWeather(
         @Query("lat") lat: Double,
-        @Query("lon") lon: Double
+        @Query("lon") lon: Double,
+        @Query("units") units: String
     ): Deferred<FutureWeatherResponse>
 
     companion object {
