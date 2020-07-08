@@ -8,6 +8,7 @@ import android.location.Location
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.Deferred
+import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 import ru.kazakovanet.synoptic.data.db.entity.WeatherLocation
 import ru.kazakovanet.synoptic.internal.LocationPermissionNotGrantedException
 import ru.kazakovanet.synoptic.internal.asDeferred
@@ -23,13 +24,13 @@ class LocationProviderImpl(
 
     private val appContext = context.applicationContext
 
-    override suspend fun hasLocationChanged(lastWeatherLocation: WeatherLocation): Boolean {
+    override suspend fun hasLocationChanged(location: WeatherLocation): Boolean {
         val deviceLocationChanged = try {
-            hasDeviceLocationChanged(lastWeatherLocation)
+            hasDeviceLocationChanged(location)
         } catch (e: LocationPermissionNotGrantedException) {
             false
         }
-        return deviceLocationChanged || hasCustomLocationChanged(lastWeatherLocation)
+        return deviceLocationChanged || hasCustomLocationChanged(location as? CurrentWeatherLocation)
     }
 
     override suspend fun getPreferredLocationString(): String {
@@ -45,7 +46,7 @@ class LocationProviderImpl(
             return "${getCustomLocationName()}"
     }
 
-    private suspend fun hasDeviceLocationChanged(lastWeatherLocation: WeatherLocation): Boolean {
+    private suspend fun hasDeviceLocationChanged(location: WeatherLocation): Boolean {
         if (!isUsingDeviceLocation()) {
             return false
         }
@@ -54,13 +55,18 @@ class LocationProviderImpl(
             ?: return false
 
         val comparisonThreshold = 0.03
-        return Math.abs(deviceLocation.latitude - lastWeatherLocation.lat) > comparisonThreshold &&
-                Math.abs(deviceLocation.longitude - lastWeatherLocation.lon) > comparisonThreshold
+        return Math.abs(deviceLocation.latitude - location.lat) > comparisonThreshold &&
+                Math.abs(deviceLocation.longitude - location.lon) > comparisonThreshold
     }
 
-    private fun hasCustomLocationChanged(lastWeatherLocation: WeatherLocation): Boolean {
-        val customLocation = getCustomLocationName()
-        return customLocation != lastWeatherLocation.name
+    private fun hasCustomLocationChanged(location: CurrentWeatherLocation?): Boolean {
+        if (location == null) return false
+
+        if (!isUsingDeviceLocation()) {
+            val customLocation = getCustomLocationName()
+            return customLocation != location.name
+        }
+        return false
     }
 
     private fun isUsingDeviceLocation(): Boolean {

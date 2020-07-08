@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.repository
+package ru.kazakovanet.synoptic.data.repository.current
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
@@ -9,20 +9,20 @@ import org.threeten.bp.ZonedDateTime
 import ru.kazakovanet.synoptic.data.db.CurrentWeatherDao
 import ru.kazakovanet.synoptic.data.db.WeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
-import ru.kazakovanet.synoptic.data.db.entity.WeatherLocation
-import ru.kazakovanet.synoptic.data.network.WeatherNetworkDataSource
-import ru.kazakovanet.synoptic.data.network.response.CurrentWeatherResponse
+import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
+import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.response.current.CurrentWeatherResponse
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
 
-class SynopticRepositoryImpl(
+class CurrentWeatherRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
     private val weatherLocationDao: WeatherLocationDao,
-    private val weatherNetworkDataSource: WeatherNetworkDataSource,
+    private val dataSource: CurrentWeatherNetworkDataSource,
     private val locationProvider: LocationProvider
-) : SynopticRepository {
+) : CurrentWeatherRepository {
 
     init {
-        weatherNetworkDataSource.downloadedCurrentWeather.observeForever { newCurrentWeather ->
+        dataSource.downloadedCurrentWeather.observeForever { newCurrentWeather ->
             persistFetchedCurrentWeather(newCurrentWeather)
         }
     }
@@ -34,7 +34,7 @@ class SynopticRepositoryImpl(
         }
     }
 
-    override suspend fun getWeatherLocation(): LiveData<WeatherLocation> {
+    override suspend fun getWeatherLocation(): LiveData<CurrentWeatherLocation> {
         return withContext(Dispatchers.IO) {
             weatherLocationDao.getLocation()
         }
@@ -48,7 +48,7 @@ class SynopticRepositoryImpl(
     }
 
     private suspend fun initWeatherData(unitSystem: String) {
-        val lastWeatherLocation = weatherLocationDao.getLocation().value
+        val lastWeatherLocation = weatherLocationDao.getLocationNonLive()
 
         if (lastWeatherLocation == null
             || locationProvider.hasLocationChanged(lastWeatherLocation)
@@ -62,7 +62,7 @@ class SynopticRepositoryImpl(
     }
 
     private suspend fun fetchCurrentWeather(unitSystem: String) {
-        weatherNetworkDataSource.fetchCurrentWeather(
+        dataSource.fetchCurrentWeather(
             locationProvider.getPreferredLocationString(), unitSystem
         )
     }

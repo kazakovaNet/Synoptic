@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
-import ru.kazakovanet.synoptic.data.network.response.CurrentWeatherResponse
+import ru.kazakovanet.synoptic.data.network.response.current.CurrentWeatherResponse
 
 /**
  * Created by NKazakova on 26.06.2020.

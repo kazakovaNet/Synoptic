@@ -4,18 +4,25 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
-import ru.kazakovanet.synoptic.data.db.entity.WeatherLocation
+import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherLocation
+import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 
 /**
  * Created by NKazakova on 26.06.2020.
  */
 
 @Database(
-    entities = [CurrentWeatherEntry::class, FutureWeatherEntry::class, WeatherLocation::class],
+    entities = [
+        CurrentWeatherEntry::class,
+        FutureWeatherEntry::class,
+        CurrentWeatherLocation::class,
+        FutureWeatherLocation::class
+    ],
     version = 1
 )
 abstract class SynopticDatabase : RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun futureWeatherDao(): FutureWeatherDao
     abstract fun weatherLocationDao(): WeatherLocationDao
+    abstract fun futureWeatherLocationDao(): FutureWeatherLocationDao
 }

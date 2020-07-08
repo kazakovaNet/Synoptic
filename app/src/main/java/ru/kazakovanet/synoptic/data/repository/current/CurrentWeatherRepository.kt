@@ -1,14 +1,15 @@
-package ru.kazakovanet.synoptic.data.repository
+package ru.kazakovanet.synoptic.data.repository.current
 
 import androidx.lifecycle.LiveData
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
-import ru.kazakovanet.synoptic.data.db.entity.WeatherLocation
+import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 
 /**
  * Created by NKazakova on 27.06.2020.
  */
 
-interface SynopticRepository {
+interface CurrentWeatherRepository {
     suspend fun getCurrentWeather(unitSystem: String): LiveData<out CurrentWeatherEntry>
-    suspend fun getWeatherLocation(): LiveData<WeatherLocation>
+
+    suspend fun getWeatherLocation(): LiveData<CurrentWeatherLocation>
 }

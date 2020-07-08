@@ -14,7 +14,7 @@ import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
 @Dao
 interface FutureWeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(futureWeatherEntries: List<FutureWeatherEntry>)
+    fun upsert(futureWeatherEntries: List<FutureWeatherEntry>)
 
     @Query("select * from future_weather where date(date) >= date(:startDate)")
     fun getWeatherForecast(startDate: Long): LiveData<List<FutureWeatherEntry>>

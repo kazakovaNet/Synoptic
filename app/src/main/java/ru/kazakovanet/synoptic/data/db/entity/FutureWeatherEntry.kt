@@ -2,7 +2,6 @@ package ru.kazakovanet.synoptic.data.db.entity
 
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
-import ru.kazakovanet.synoptic.data.db.LocalDateToLongConverter
 import ru.kazakovanet.synoptic.data.db.WeatherListToSingleItemConverter
 
 @Entity(tableName = "future_weather", indices = [Index(value = ["date"], unique = true)])

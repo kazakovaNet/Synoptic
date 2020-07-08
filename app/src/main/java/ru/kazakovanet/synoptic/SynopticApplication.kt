@@ -16,17 +16,22 @@ import org.kodein.di.generic.singleton
 import ru.kazakovanet.synoptic.data.db.SynopticDatabase
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
-import ru.kazakovanet.synoptic.data.network.WeatherNetworkDataSource
-import ru.kazakovanet.synoptic.data.network.WeatherNetworkDataSourceImpl
+import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.network.api.openweathermap.OpenWeatherMapApiService
 import ru.kazakovanet.synoptic.data.network.api.weatherstack.WeatherStackApiService
+import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
 import ru.kazakovanet.synoptic.data.provider.LocationProviderImpl
 import ru.kazakovanet.synoptic.data.provider.UnitProvider
 import ru.kazakovanet.synoptic.data.provider.UnitProviderImpl
-import ru.kazakovanet.synoptic.data.repository.SynopticRepository
-import ru.kazakovanet.synoptic.data.repository.SynopticRepositoryImpl
+import ru.kazakovanet.synoptic.data.repository.current.CurrentWeatherRepository
+import ru.kazakovanet.synoptic.data.repository.current.CurrentWeatherRepositoryImpl
+import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepository
+import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepositoryImpl
 import ru.kazakovanet.synoptic.ui.weather.current.CurrentWeatherViewModelFactory
+import ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherViewModelFactory
 
 /**
  * Created by NKazakova on 27.06.2020.
@@ -44,25 +49,43 @@ class SynopticApplication : Application(), KodeinAware {
             ).build()
         }
         bind() from singleton { instance<SynopticDatabase>().currentWeatherDao() }
+        bind() from singleton { instance<SynopticDatabase>().futureWeatherDao() }
         bind() from singleton { instance<SynopticDatabase>().weatherLocationDao() }
+        bind() from singleton { instance<SynopticDatabase>().futureWeatherLocationDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance()) }
-        bind<WeatherNetworkDataSource>() with singleton {
-            WeatherNetworkDataSourceImpl(instance(), instance())
+        bind<CurrentWeatherNetworkDataSource>() with singleton {
+            CurrentWeatherNetworkDataSourceImpl(
+                weatherStackApiService = instance()
+            )
+        }
+        bind<FutureWeatherNetworkDataSource>() with singleton {
+            FutureWeatherNetworkDataSourceImpl(
+                openWeatherMapApiService = instance()
+            )
         }
         bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
         bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
-        bind<SynopticRepository>() with singleton {
-            SynopticRepositoryImpl(
+        bind<CurrentWeatherRepository>() with singleton {
+            CurrentWeatherRepositoryImpl(
                 currentWeatherDao = instance(),
                 weatherLocationDao = instance(),
-                weatherNetworkDataSource = instance(),
+                dataSource = instance(),
+                locationProvider = instance()
+            )
+        }
+        bind<FutureWeatherRepository>() with singleton {
+            FutureWeatherRepositoryImpl(
+                futureWeatherDao = instance(),
+                futureWeatherLocationDao = instance(),
+                dataSource = instance(),
                 locationProvider = instance()
             )
         }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
+        bind() from provider { FutureListWeatherViewModelFactory(repository = instance()) }
     }
 
     override fun onCreate() {
