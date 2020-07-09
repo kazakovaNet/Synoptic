@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.db
+package ru.kazakovanet.synoptic.data.db.dao.current
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

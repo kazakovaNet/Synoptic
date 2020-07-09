@@ -2,6 +2,10 @@ package ru.kazakovanet.synoptic.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import ru.kazakovanet.synoptic.data.db.dao.current.CurrentWeatherDao
+import ru.kazakovanet.synoptic.data.db.dao.current.CurrentWeatherLocationDao
+import ru.kazakovanet.synoptic.data.db.dao.future.FutureWeatherDao
+import ru.kazakovanet.synoptic.data.db.dao.future.FutureWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherLocation
@@ -23,6 +27,6 @@ import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 abstract class SynopticDatabase : RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun futureWeatherDao(): FutureWeatherDao
-    abstract fun weatherLocationDao(): WeatherLocationDao
+    abstract fun weatherLocationDao(): CurrentWeatherLocationDao
     abstract fun futureWeatherLocationDao(): FutureWeatherLocationDao
 }

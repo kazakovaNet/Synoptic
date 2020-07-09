@@ -1,8 +1,5 @@
 package ru.kazakovanet.synoptic.data.db.entity
 
-
-import com.google.gson.annotations.SerializedName
-
 data class Temp(
     val day: Double,
     val eve: Double,

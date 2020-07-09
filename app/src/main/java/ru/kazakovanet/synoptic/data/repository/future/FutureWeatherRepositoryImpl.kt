@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
-import ru.kazakovanet.synoptic.data.db.FutureWeatherDao
-import ru.kazakovanet.synoptic.data.db.FutureWeatherLocationDao
+import ru.kazakovanet.synoptic.data.db.dao.future.FutureWeatherDao
+import ru.kazakovanet.synoptic.data.db.dao.future.FutureWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherLocation
 import ru.kazakovanet.synoptic.data.network.datasource.future.FORECAST_DAYS_COUNT

@@ -6,8 +6,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
-import ru.kazakovanet.synoptic.data.db.CurrentWeatherDao
-import ru.kazakovanet.synoptic.data.db.WeatherLocationDao
+import ru.kazakovanet.synoptic.data.db.dao.current.CurrentWeatherDao
+import ru.kazakovanet.synoptic.data.db.dao.current.CurrentWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
@@ -16,7 +16,7 @@ import ru.kazakovanet.synoptic.data.provider.LocationProvider
 
 class CurrentWeatherRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
-    private val weatherLocationDao: WeatherLocationDao,
+    private val currentWeatherLocationDao: CurrentWeatherLocationDao,
     private val dataSource: CurrentWeatherNetworkDataSource,
     private val locationProvider: LocationProvider
 ) : CurrentWeatherRepository {
@@ -36,19 +36,19 @@ class CurrentWeatherRepositoryImpl(
 
     override suspend fun getWeatherLocation(): LiveData<CurrentWeatherLocation> {
         return withContext(Dispatchers.IO) {
-            weatherLocationDao.getLocation()
+            currentWeatherLocationDao.getLocation()
         }
     }
 
     private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherResponse) {
         GlobalScope.launch(Dispatchers.IO) {
             currentWeatherDao.upsert(fetchedWeather.currentWeatherEntry)
-            weatherLocationDao.upsert(fetchedWeather.location)
+            currentWeatherLocationDao.upsert(fetchedWeather.location)
         }
     }
 
     private suspend fun initWeatherData(unitSystem: String) {
-        val lastWeatherLocation = weatherLocationDao.getLocationNonLive()
+        val lastWeatherLocation = currentWeatherLocationDao.getLocationNonLive()
 
         if (lastWeatherLocation == null
             || locationProvider.hasLocationChanged(lastWeatherLocation)
