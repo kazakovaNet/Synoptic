@@ -9,10 +9,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
-import org.kodein.di.generic.singleton
+import org.kodein.di.generic.*
+import org.threeten.bp.LocalDate
 import ru.kazakovanet.synoptic.data.db.SynopticDatabase
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
@@ -31,6 +29,7 @@ import ru.kazakovanet.synoptic.data.repository.current.CurrentWeatherRepositoryI
 import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepository
 import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepositoryImpl
 import ru.kazakovanet.synoptic.ui.weather.current.CurrentWeatherViewModelFactory
+import ru.kazakovanet.synoptic.ui.weather.future.detail.FutureDetailWeatherViewModelFactory
 import ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherViewModelFactory
 
 /**
@@ -70,7 +69,7 @@ class SynopticApplication : Application(), KodeinAware {
         bind<CurrentWeatherRepository>() with singleton {
             CurrentWeatherRepositoryImpl(
                 currentWeatherDao = instance(),
-                weatherLocationDao = instance(),
+                currentWeatherLocationDao = instance(),
                 dataSource = instance(),
                 locationProvider = instance()
             )
@@ -87,6 +86,13 @@ class SynopticApplication : Application(), KodeinAware {
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
         bind() from provider {
             FutureListWeatherViewModelFactory(
+                repository = instance(),
+                unitProvider = instance()
+            )
+        }
+        bind() from factory { detailDate: Long ->
+            FutureDetailWeatherViewModelFactory(
+                detailDate = detailDate,
                 repository = instance(),
                 unitProvider = instance()
             )

@@ -19,6 +19,9 @@ interface FutureWeatherDao {
     @Query("select * from future_weather where date >= :startDate")
     fun getWeatherForecast(startDate: Long): LiveData<List<FutureWeatherEntry>>
 
+    @Query("select * from future_weather where date = :date")
+    fun getDetailWeatherByDay(date: Long): LiveData<FutureWeatherEntry>
+
     @Query("select count(id) from future_weather where date >= :startDate")
     fun countFutureWeather(startDate: Long): Int
 

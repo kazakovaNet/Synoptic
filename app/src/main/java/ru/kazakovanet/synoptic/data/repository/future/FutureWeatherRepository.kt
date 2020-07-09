@@ -16,4 +16,6 @@ interface FutureWeatherRepository {
     ): LiveData<out List<FutureWeatherEntry>>
 
     suspend fun getFutureWeatherLocation(): LiveData<FutureWeatherLocation>
+
+    suspend fun getFutureWeatherByDate(date: Long, unitSystem: String): LiveData<out FutureWeatherEntry>
 }

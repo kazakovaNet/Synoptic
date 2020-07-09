@@ -41,6 +41,16 @@ class FutureWeatherRepositoryImpl(
         }
     }
 
+    override suspend fun getFutureWeatherByDate(
+        date: Long,
+        unitSystem: String
+    ): LiveData<out FutureWeatherEntry> {
+        return withContext(Dispatchers.IO) {
+            initWeatherData(unitSystem)
+            futureWeatherDao.getDetailWeatherByDay(date)
+        }
+    }
+
     private fun persistFetchedFutureWeather(fetchedWeather: FutureWeatherResponse) {
 
         fun deleteOldForecastData() {

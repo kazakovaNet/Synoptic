@@ -12,11 +12,19 @@
     <fragment
         android:id="@+id/futureListWeatherFragment"
         android:name="ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherFragment"
-        tools:layout="@layout/future_list_weather_fragment" />
+        tools:layout="@layout/future_list_weather_fragment" >
+        <action
+            android:id="@+id/actionDetail"
+            app:destination="@id/futureDetailWeatherFragment" />
+    </fragment>
     <fragment
         android:id="@+id/futureDetailWeatherFragment"
         android:name="ru.kazakovanet.synoptic.ui.weather.future.detail.FutureDetailWeatherFragment"
-        tools:layout="@layout/future_detail_weather_fragment" />
+        tools:layout="@layout/future_detail_weather_fragment" >
+        <argument
+            android:name="dateLong"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.kazakovanet.synoptic.ui.settings.SettingsFragment" />
