@@ -16,6 +16,7 @@ import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
 import ru.kazakovanet.synoptic.data.network.api.openweathermap.OpenWeatherMapApiService
 import ru.kazakovanet.synoptic.data.network.api.weatherstack.WeatherStackApiService
+import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooWeatherApiService
 import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSource
@@ -54,6 +55,7 @@ class SynopticApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance()) }
+        bind() from singleton { YahooWeatherApiService(instance()) }
         bind<CurrentWeatherNetworkDataSource>() with singleton {
             CurrentWeatherNetworkDataSourceImpl(
                 weatherStackApiService = instance()
