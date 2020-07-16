@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.network.datasource.current
+package ru.kazakovanet.synoptic.data.network.datasource.weather.current
 
 import android.util.Log
 import androidx.lifecycle.LiveData

@@ -3,7 +3,7 @@ package ru.kazakovanet.synoptic.ui.weather.future.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.kazakovanet.synoptic.data.provider.UnitProvider
-import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepository
+import ru.kazakovanet.synoptic.data.repository.weather.future.FutureWeatherRepository
 
 /**
  * Created by NKazakova on 08.07.2020.

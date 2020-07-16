@@ -15,7 +15,7 @@ import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.api.AUTH_URL
 import ru.kazakovanet.synoptic.data.network.api.CLIENT_ID
 import ru.kazakovanet.synoptic.data.network.api.CLIENT_SECRET
-import ru.kazakovanet.synoptic.data.network.api.model.AccessToken
+import ru.kazakovanet.synoptic.data.network.api.dto.AccessTokenDTO
 
 /**
  * Created by NKazakova on 11.07.2020.
@@ -27,7 +27,7 @@ interface YahooWeatherApiService {
     @POST("get_token")
     fun getAccessToken(
         @FieldMap fields: Map<String, String>
-    ): Deferred<AccessToken>
+    ): Deferred<AccessTokenDTO>
 
     companion object {
         operator fun invoke(

@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.repository.future
+package ru.kazakovanet.synoptic.data.repository.weather.future
 
 import androidx.lifecycle.LiveData
 import org.threeten.bp.LocalDate

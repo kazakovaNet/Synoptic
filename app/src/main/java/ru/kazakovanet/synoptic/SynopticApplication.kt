@@ -10,25 +10,28 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.*
-import org.threeten.bp.LocalDate
 import ru.kazakovanet.synoptic.data.db.SynopticDatabase
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
 import ru.kazakovanet.synoptic.data.network.api.openweathermap.OpenWeatherMapApiService
 import ru.kazakovanet.synoptic.data.network.api.weatherstack.WeatherStackApiService
 import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooWeatherApiService
-import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
-import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSourceImpl
-import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSource
-import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSourceImpl
+import ru.kazakovanet.synoptic.data.network.datasource.auth.YahooAuthNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.auth.YahooAuthNetworkDataSourceImpl
+import ru.kazakovanet.synoptic.data.network.datasource.weather.current.CurrentWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.weather.current.CurrentWeatherNetworkDataSourceImpl
+import ru.kazakovanet.synoptic.data.network.datasource.weather.future.FutureWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.weather.future.FutureWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
 import ru.kazakovanet.synoptic.data.provider.LocationProviderImpl
 import ru.kazakovanet.synoptic.data.provider.UnitProvider
 import ru.kazakovanet.synoptic.data.provider.UnitProviderImpl
-import ru.kazakovanet.synoptic.data.repository.current.CurrentWeatherRepository
-import ru.kazakovanet.synoptic.data.repository.current.CurrentWeatherRepositoryImpl
-import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepository
-import ru.kazakovanet.synoptic.data.repository.future.FutureWeatherRepositoryImpl
+import ru.kazakovanet.synoptic.data.repository.auth.YahooAuthApiRepository
+import ru.kazakovanet.synoptic.data.repository.auth.YahooAuthApiRepositoryImpl
+import ru.kazakovanet.synoptic.data.repository.weather.current.CurrentWeatherRepository
+import ru.kazakovanet.synoptic.data.repository.weather.current.CurrentWeatherRepositoryImpl
+import ru.kazakovanet.synoptic.data.repository.weather.future.FutureWeatherRepository
+import ru.kazakovanet.synoptic.data.repository.weather.future.FutureWeatherRepositoryImpl
 import ru.kazakovanet.synoptic.ui.weather.current.CurrentWeatherViewModelFactory
 import ru.kazakovanet.synoptic.ui.weather.future.detail.FutureDetailWeatherViewModelFactory
 import ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherViewModelFactory
@@ -41,6 +44,7 @@ class SynopticApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@SynopticApplication))
 
+        // Database
         bind<SynopticDatabase>() with singleton {
             Room.databaseBuilder(
                 this@SynopticApplication,
@@ -48,14 +52,23 @@ class SynopticApplication : Application(), KodeinAware {
                 "synoptic.db"
             ).build()
         }
+
+        // DAO
         bind() from singleton { instance<SynopticDatabase>().currentWeatherDao() }
         bind() from singleton { instance<SynopticDatabase>().futureWeatherDao() }
         bind() from singleton { instance<SynopticDatabase>().weatherLocationDao() }
         bind() from singleton { instance<SynopticDatabase>().futureWeatherLocationDao() }
-        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
-        bind() from singleton { WeatherStackApiService(instance()) }
-        bind() from singleton { OpenWeatherMapApiService(instance()) }
-        bind() from singleton { YahooWeatherApiService(instance()) }
+        bind() from singleton { instance<SynopticDatabase>().accessTokenDao() }
+
+        // Interceptor
+        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(context = instance()) }
+
+        // ApiService
+        bind() from singleton { WeatherStackApiService(connectivityInterceptor = instance()) }
+        bind() from singleton { OpenWeatherMapApiService(connectivityInterceptor = instance()) }
+        bind() from singleton { YahooWeatherApiService(connectivityInterceptor = instance()) }
+
+        // Data Source
         bind<CurrentWeatherNetworkDataSource>() with singleton {
             CurrentWeatherNetworkDataSourceImpl(
                 weatherStackApiService = instance()
@@ -66,8 +79,23 @@ class SynopticApplication : Application(), KodeinAware {
                 openWeatherMapApiService = instance()
             )
         }
+        bind<YahooAuthNetworkDataSource>() with singleton {
+            YahooAuthNetworkDataSourceImpl(
+                yahooWeatherApiService = instance()
+            )
+        }
+
+        // Provider
         bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
-        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
+        bind<LocationProvider>() with singleton {
+            LocationProviderImpl(
+                fusedLocationProviderClient = instance(),
+                context = instance()
+            )
+        }
+        bind<UnitProvider>() with singleton { UnitProviderImpl(context = instance()) }
+
+        // Repository
         bind<CurrentWeatherRepository>() with singleton {
             CurrentWeatherRepositoryImpl(
                 currentWeatherDao = instance(),
@@ -84,8 +112,20 @@ class SynopticApplication : Application(), KodeinAware {
                 locationProvider = instance()
             )
         }
-        bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
-        bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
+        bind<YahooAuthApiRepository>() with singleton {
+            YahooAuthApiRepositoryImpl(
+                dao = instance(),
+                dataSource = instance()
+            )
+        }
+
+        // ViewModelFactory
+        bind() from provider {
+            CurrentWeatherViewModelFactory(
+                currentWeatherRepository = instance(),
+                unitProvider = instance()
+            )
+        }
         bind() from provider {
             FutureListWeatherViewModelFactory(
                 repository = instance(),

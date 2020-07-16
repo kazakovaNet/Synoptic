@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.db.dao.current
+package ru.kazakovanet.synoptic.data.db.dao.weather.current
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

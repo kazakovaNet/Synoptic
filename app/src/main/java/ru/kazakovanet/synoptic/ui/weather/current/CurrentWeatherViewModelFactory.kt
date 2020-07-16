@@ -3,7 +3,7 @@ package ru.kazakovanet.synoptic.ui.weather.current
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.kazakovanet.synoptic.data.provider.UnitProvider
-import ru.kazakovanet.synoptic.data.repository.current.CurrentWeatherRepository
+import ru.kazakovanet.synoptic.data.repository.weather.current.CurrentWeatherRepository
 
 /**
  * Created by NKazakova on 30.06.2020.

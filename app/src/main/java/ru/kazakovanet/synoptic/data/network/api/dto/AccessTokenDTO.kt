@@ -1,8 +1,8 @@
-package ru.kazakovanet.synoptic.data.network.api.model
+package ru.kazakovanet.synoptic.data.network.api.dto
 
 import com.google.gson.annotations.SerializedName
 
-class AccessToken(
+class AccessTokenDTO(
     @SerializedName("access_token")
     val accessToken: String,
     @SerializedName("token_type")
@@ -12,5 +12,5 @@ class AccessToken(
     @SerializedName("refresh_token")
     val refreshToken: String,
     @SerializedName("xoauth_yahoo_guid")
-    val xOauthYahooGuid: String
+    val xOauthYahooGuid: String?
 )

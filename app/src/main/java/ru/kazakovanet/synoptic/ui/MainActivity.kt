@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -16,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -25,9 +27,8 @@ import org.kodein.di.generic.instance
 import ru.kazakovanet.synoptic.R
 import ru.kazakovanet.synoptic.data.network.api.AUTH_URL
 import ru.kazakovanet.synoptic.data.network.api.CLIENT_ID
-import ru.kazakovanet.synoptic.data.network.api.GRANT_TYPE
 import ru.kazakovanet.synoptic.data.network.api.REDIRECT_URI
-import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooWeatherApiService
+import ru.kazakovanet.synoptic.data.repository.auth.YahooAuthApiRepository
 
 const val MY_PERMISSION_ACCESS_COARSE_LOCATION = 1
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val locationCallback = object : LocationCallback() {
     }
     private lateinit var navController: NavController
-    private val api: YahooWeatherApiService by instance()
+    private val repository: YahooAuthApiRepository by instance()
     private var switcher = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,14 +85,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
         val code = uri.getQueryParameter("code") ?: return
 
-        GlobalScope.launch {
-            val fieldMap = mapOf(
-                Pair("redirect_uri", REDIRECT_URI),
-                Pair("grant_type", GRANT_TYPE),
-                Pair("code", code)
-            )
-            val accessToken = api.getAccessToken(fieldMap).await()
-            println(accessToken.accessToken)
+        GlobalScope.launch(Dispatchers.Main) {
+            repository.getAccessToken(code).observe(this@MainActivity, Observer {
+                println(it.accessToken)
+            })
         }
     }
 

@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.repository.current
+package ru.kazakovanet.synoptic.data.repository.weather.current
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
@@ -6,11 +6,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
-import ru.kazakovanet.synoptic.data.db.dao.current.CurrentWeatherDao
-import ru.kazakovanet.synoptic.data.db.dao.current.CurrentWeatherLocationDao
+import ru.kazakovanet.synoptic.data.db.dao.weather.current.CurrentWeatherDao
+import ru.kazakovanet.synoptic.data.db.dao.weather.current.CurrentWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
-import ru.kazakovanet.synoptic.data.network.datasource.current.CurrentWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.weather.current.CurrentWeatherNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.response.current.CurrentWeatherResponse
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
 

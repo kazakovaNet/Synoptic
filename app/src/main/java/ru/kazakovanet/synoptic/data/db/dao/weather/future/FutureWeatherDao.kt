@@ -1,11 +1,10 @@
-package ru.kazakovanet.synoptic.data.db.dao.future
+package ru.kazakovanet.synoptic.data.db.dao.weather.future
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import org.threeten.bp.LocalDate
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
 
 /**

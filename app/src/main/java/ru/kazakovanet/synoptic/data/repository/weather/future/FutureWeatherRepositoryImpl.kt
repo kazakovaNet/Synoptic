@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.repository.future
+package ru.kazakovanet.synoptic.data.repository.weather.future
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
@@ -7,12 +7,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
-import ru.kazakovanet.synoptic.data.db.dao.future.FutureWeatherDao
-import ru.kazakovanet.synoptic.data.db.dao.future.FutureWeatherLocationDao
+import ru.kazakovanet.synoptic.data.db.dao.weather.future.FutureWeatherDao
+import ru.kazakovanet.synoptic.data.db.dao.weather.future.FutureWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherEntry
 import ru.kazakovanet.synoptic.data.db.entity.FutureWeatherLocation
-import ru.kazakovanet.synoptic.data.network.datasource.future.FORECAST_DAYS_COUNT
-import ru.kazakovanet.synoptic.data.network.datasource.future.FutureWeatherNetworkDataSource
+import ru.kazakovanet.synoptic.data.network.datasource.weather.future.FORECAST_DAYS_COUNT
+import ru.kazakovanet.synoptic.data.network.datasource.weather.future.FutureWeatherNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.response.future.FutureWeatherResponse
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
 

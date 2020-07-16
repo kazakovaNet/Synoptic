@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.repository.current
+package ru.kazakovanet.synoptic.data.repository.weather.current
 
 import androidx.lifecycle.LiveData
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherEntry

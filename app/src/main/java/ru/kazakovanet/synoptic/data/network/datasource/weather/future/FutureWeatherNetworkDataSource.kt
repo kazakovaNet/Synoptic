@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.network.datasource.future
+package ru.kazakovanet.synoptic.data.network.datasource.weather.future
 
 import androidx.lifecycle.LiveData
 import ru.kazakovanet.synoptic.data.network.response.future.FutureWeatherResponse
