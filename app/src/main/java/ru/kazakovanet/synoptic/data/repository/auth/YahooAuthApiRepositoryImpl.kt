@@ -29,6 +29,13 @@ class YahooAuthApiRepositoryImpl(
         }
     }
 
+    override suspend fun isAccessTokenReceived(): Boolean {
+        return withContext(Dispatchers.IO) {
+            val lastAccessToken = dao.getAccessTokenNonLive() ?: return@withContext false
+            !isFetchAccessTokenNeeded(lastAccessToken.expiresDate)
+        }
+    }
+
     private fun persistFetchedAccessToken(newAccessToken: AccessTokenDTO) {
         GlobalScope.launch(Dispatchers.IO) {
             dao.upsert(AccessTokenDataMapper.map(newAccessToken))
@@ -38,7 +45,7 @@ class YahooAuthApiRepositoryImpl(
     private suspend fun initAccessData(code: String) {
         val lastAccessToken = dao.getAccessTokenNonLive()
 
-        if (lastAccessToken == null || isFetchAccessTokenNeeded(lastAccessToken.expiresIn)) {
+        if (lastAccessToken == null || isFetchAccessTokenNeeded(lastAccessToken.expiresDate)) {
             fetchAccessToken(code)
             return
         }
@@ -48,9 +55,8 @@ class YahooAuthApiRepositoryImpl(
         dataSource.fetchAccessToken(code)
     }
 
-    private fun isFetchAccessTokenNeeded(expiresIn: Int): Boolean {
-        // TODO: 14.07.2020
-        return true
+    private fun isFetchAccessTokenNeeded(expiresIn: Long): Boolean {
+        return System.currentTimeMillis() <= expiresIn
     }
 
 }

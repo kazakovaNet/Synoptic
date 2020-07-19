@@ -12,7 +12,7 @@ object AccessTokenDataMapper {
         return AccessTokenEntity(
             dto.accessToken,
             dto.tokenType,
-            dto.expiresIn,
+            System.currentTimeMillis() + dto.expiresIn,
             dto.refreshToken,
             dto.xOauthYahooGuid
         )

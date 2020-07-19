@@ -8,4 +8,5 @@ import ru.kazakovanet.synoptic.data.db.entity.AccessTokenEntity
  */
 interface YahooAuthApiRepository {
     suspend fun getAccessToken(code: String): LiveData<out AccessTokenEntity>
+    suspend fun isAccessTokenReceived(): Boolean
 }

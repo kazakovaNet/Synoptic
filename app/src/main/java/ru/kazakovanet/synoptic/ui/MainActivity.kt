@@ -1,10 +1,15 @@
 package ru.kazakovanet.synoptic.ui
 
 import android.Manifest
-import android.content.Intent
+import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -40,16 +45,34 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     }
     private lateinit var navController: NavController
     private val repository: YahooAuthApiRepository by instance()
-    private var switcher = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(
+        GlobalScope.launch(Dispatchers.Main) {
+            if (repository.isAccessTokenReceived()) {
+                showCurrentWeather()
+                return@launch
+            }
+
+            webVIew.webViewClient = object : WebViewClient() {
+                @TargetApi(Build.VERSION_CODES.N)
+                override fun shouldOverrideUrlLoading(
+                    view: WebView,
+                    request: WebResourceRequest
+                ): Boolean {
+                    if (!request.url.toString().startsWith(REDIRECT_URI)) {
+                        view.loadUrl(request.url.toString())
+                    } else {
+                        getAuthToken(request.url)
+                    }
+                    return true
+                }
+            }
+
+            webVIew.loadUrl(
                 AUTH_URL +
                         "request_auth" +
                         "?client_id=$CLIENT_ID" +
@@ -57,39 +80,33 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                         "&response_type=code" +
                         "&language=en-us"
             )
-        )
-
-        startActivity(intent)
-
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-
-        bottom_nav.setupWithNavController(navController)
-
-        NavigationUI.setupActionBarWithNavController(this, navController)
-
-        if (hasLocationPermission()) bindLocationManager()
-        else requestLocationPermission()
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        if (switcher) return
-        getAuthToken()
-        switcher = !switcher
-    }
-
-    private fun getAuthToken() {
-        val uri = intent.data ?: return
-        if (!uri.toString().startsWith(REDIRECT_URI)) return
-
+    private fun getAuthToken(uri: Uri) {
         val code = uri.getQueryParameter("code") ?: return
 
         GlobalScope.launch(Dispatchers.Main) {
             repository.getAccessToken(code).observe(this@MainActivity, Observer {
-                println(it.accessToken)
+                println("Getting token: ${it.accessToken}")
+
+                showCurrentWeather()
             })
         }
+    }
+
+    private fun showCurrentWeather() {
+        webVIew.visibility = View.GONE
+
+        navController =
+            Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
+
+        bottom_nav.setupWithNavController(navController)
+
+        NavigationUI.setupActionBarWithNavController(this@MainActivity, navController)
+
+        if (hasLocationPermission()) bindLocationManager()
+        else requestLocationPermission()
     }
 
     private fun bindLocationManager() {

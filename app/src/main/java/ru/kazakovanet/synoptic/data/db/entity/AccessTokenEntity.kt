@@ -16,7 +16,7 @@ class AccessTokenEntity(
     @ColumnInfo(name = "token_type")
     val tokenType: String,
     @ColumnInfo(name = "expires_in")
-    val expiresIn: Int,
+    val expiresDate: Long,
     @ColumnInfo(name = "refresh_token")
     val refreshToken: String,
     @ColumnInfo(name = "xoauth_yahoo_guid")
