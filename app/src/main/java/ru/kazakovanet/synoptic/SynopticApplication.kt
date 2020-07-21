@@ -32,6 +32,7 @@ import ru.kazakovanet.synoptic.data.repository.weather.current.CurrentWeatherRep
 import ru.kazakovanet.synoptic.data.repository.weather.current.CurrentWeatherRepositoryImpl
 import ru.kazakovanet.synoptic.data.repository.weather.future.FutureWeatherRepository
 import ru.kazakovanet.synoptic.data.repository.weather.future.FutureWeatherRepositoryImpl
+import ru.kazakovanet.synoptic.ui.auth.YahooAPIAuthenticateViewModelFactory
 import ru.kazakovanet.synoptic.ui.weather.current.CurrentWeatherViewModelFactory
 import ru.kazakovanet.synoptic.ui.weather.future.detail.FutureDetailWeatherViewModelFactory
 import ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherViewModelFactory
@@ -137,6 +138,11 @@ class SynopticApplication : Application(), KodeinAware {
                 detailDate = detailDate,
                 repository = instance(),
                 unitProvider = instance()
+            )
+        }
+        bind() from provider {
+            YahooAPIAuthenticateViewModelFactory(
+                repository = instance()
             )
         }
     }

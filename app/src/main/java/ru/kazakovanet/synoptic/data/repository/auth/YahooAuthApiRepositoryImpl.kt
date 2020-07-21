@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kazakovanet.synoptic.data.datamapper.AccessTokenDataMapper
 import ru.kazakovanet.synoptic.data.db.dao.auth.AccessTokenDao
-import ru.kazakovanet.synoptic.data.db.entity.AccessTokenEntity
 import ru.kazakovanet.synoptic.data.network.api.dto.AccessTokenDTO
 import ru.kazakovanet.synoptic.data.network.datasource.auth.YahooAuthNetworkDataSource
 
@@ -18,14 +17,14 @@ class YahooAuthApiRepositoryImpl(
 
     init {
         dataSource.accessToken.observeForever { newAccessToken ->
-            persistFetchedAccessToken(newAccessToken)
+            persistAccessToken(newAccessToken)
         }
     }
 
-    override suspend fun getAccessToken(code: String): LiveData<out AccessTokenEntity> {
+    override suspend fun getAccessToken(code: String): Boolean {
         return withContext(Dispatchers.IO) {
             initAccessData(code)
-            dao.getAccessToken()
+            true
         }
     }
 
@@ -36,7 +35,7 @@ class YahooAuthApiRepositoryImpl(
         }
     }
 
-    private fun persistFetchedAccessToken(newAccessToken: AccessTokenDTO) {
+    private fun persistAccessToken(newAccessToken: AccessTokenDTO) {
         GlobalScope.launch(Dispatchers.IO) {
             dao.upsert(AccessTokenDataMapper.map(newAccessToken))
         }
@@ -46,17 +45,11 @@ class YahooAuthApiRepositoryImpl(
         val lastAccessToken = dao.getAccessTokenNonLive()
 
         if (lastAccessToken == null || isFetchAccessTokenNeeded(lastAccessToken.expiresDate)) {
-            fetchAccessToken(code)
-            return
+            dataSource.fetchAccessToken(code)
         }
-    }
-
-    private suspend fun fetchAccessToken(code: String) {
-        dataSource.fetchAccessToken(code)
     }
 
     private fun isFetchAccessTokenNeeded(expiresIn: Long): Boolean {
         return System.currentTimeMillis() <= expiresIn
     }
-
 }

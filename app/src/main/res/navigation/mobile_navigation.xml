@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation.xml"
-    app:startDestination="@id/currentWeatherFragment">
+    app:startDestination="@id/yahooAPIAuthenticateFragment">
 
     <fragment
         android:id="@+id/currentWeatherFragment"
@@ -28,4 +28,16 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.kazakovanet.synoptic.ui.settings.SettingsFragment" />
+    <fragment
+        android:id="@+id/yahooAPIAuthenticateFragment"
+        android:name="ru.kazakovanet.synoptic.ui.auth.YahooAPIAuthenticateFragment"
+        android:label="Yahoo Authenticate"
+        tools:layout="@layout/yahoo_api_authenticate_fragment">
+        <argument
+            android:name="code"
+            app:argType="string" />
+        <action
+            android:id="@+id/actionCurrent"
+            app:destination="@id/currentWeatherFragment" />
+    </fragment>
 </navigation>

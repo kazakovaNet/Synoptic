@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.future_detail_weather_fragment.*
 import kotlinx.android.synthetic.main.item_future_weather.imageView_condition_icon
 import kotlinx.android.synthetic.main.item_future_weather.textView_condition
@@ -43,7 +42,9 @@ class FutureDetailWeatherFragment : ScopedFragment(), KodeinAware {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val safeArgs = arguments?.let { FutureDetailWeatherFragmentArgs.fromBundle(it) }
+        val safeArgs = arguments?.let {
+            FutureDetailWeatherFragmentArgs.fromBundle(it)
+        }
         val date = safeArgs?.dateLong ?: throw DateNotFoundException()
         viewModel = ViewModelProvider(this, viewModelFactoryInstanceFactory(date))
             .get(FutureDetailWeatherViewModel::class.java)
