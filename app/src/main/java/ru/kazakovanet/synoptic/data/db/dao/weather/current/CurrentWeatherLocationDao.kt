@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.kazakovanet.synoptic.data.db.entity.WEATHER_LOCATION_ID
 import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
+import ru.kazakovanet.synoptic.data.db.entity.WEATHER_LOCATION_ID
 
 /**
  * Created by NKazakova on 01.07.2020.

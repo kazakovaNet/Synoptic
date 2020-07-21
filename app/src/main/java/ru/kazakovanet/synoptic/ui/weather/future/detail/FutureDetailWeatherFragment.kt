@@ -52,7 +52,7 @@ class FutureDetailWeatherFragment : ScopedFragment(), KodeinAware {
         bindUI()
     }
 
-    private fun bindUI() = launch() {
+    private fun bindUI() = launch {
         val futureWeather = viewModel.weather.await()
         val weatherLocation = viewModel.weatherLocation.await()
 

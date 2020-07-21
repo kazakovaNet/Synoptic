@@ -124,6 +124,7 @@ class SynopticApplication : Application(), KodeinAware {
         bind() from provider {
             CurrentWeatherViewModelFactory(
                 currentWeatherRepository = instance(),
+                authApiRepository = instance(),
                 unitProvider = instance()
             )
         }

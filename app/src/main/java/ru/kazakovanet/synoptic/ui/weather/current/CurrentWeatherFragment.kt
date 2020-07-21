@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -40,6 +41,11 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun bindUi() = launch {
+        if (!viewModel.isAccessTokenReceived()) {
+            showAuthScreen(group_loading)
+            return@launch
+        }
+
         val currentWeather = viewModel.weather.await()
         val weatherLocation = viewModel.weatherLocation.await()
 
@@ -65,6 +71,11 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
                 .load(if (it.icon.isNotEmpty()) it.icon[0] else "")
                 .into(imageView_condition_icon)
         })
+    }
+
+    private fun showAuthScreen(view: View) {
+        val actionAuth = CurrentWeatherFragmentDirections.actionAuth()
+        Navigation.findNavController(view).navigate(actionAuth)
     }
 
     private fun chooseLocalizedUnitAbbreviation(metric: String, imperial: String): String {

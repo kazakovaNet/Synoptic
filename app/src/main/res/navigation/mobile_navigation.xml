@@ -3,12 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation.xml"
-    app:startDestination="@id/yahooAPIAuthenticateFragment">
+    app:startDestination="@id/currentWeatherFragment">
 
     <fragment
         android:id="@+id/currentWeatherFragment"
         android:name="ru.kazakovanet.synoptic.ui.weather.current.CurrentWeatherFragment"
-        tools:layout="@layout/current_weather_fragment" />
+        tools:layout="@layout/current_weather_fragment" >
+        <action
+            android:id="@+id/actionAuth"
+            app:destination="@id/yahooAPIAuthenticateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/futureListWeatherFragment"
         android:name="ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherFragment"
@@ -32,12 +36,5 @@
         android:id="@+id/yahooAPIAuthenticateFragment"
         android:name="ru.kazakovanet.synoptic.ui.auth.YahooAPIAuthenticateFragment"
         android:label="Yahoo Authenticate"
-        tools:layout="@layout/yahoo_api_authenticate_fragment">
-        <argument
-            android:name="code"
-            app:argType="string" />
-        <action
-            android:id="@+id/actionCurrent"
-            app:destination="@id/currentWeatherFragment" />
-    </fragment>
+        tools:layout="@layout/yahoo_api_authenticate_fragment"/>
 </navigation>

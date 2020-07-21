@@ -19,8 +19,10 @@ class FutureDetailWeatherViewModel(
         get() = unitSystem == UnitSystem.METRIC
 
     val weather by lazyDeferred {
-        repository.getFutureWeatherByDate(detailDate,
-            unitSystem.name.toLowerCase(Locale.getDefault()))
+        repository.getFutureWeatherByDate(
+            detailDate,
+            unitSystem.name.toLowerCase(Locale.getDefault())
+        )
     }
 
     val weatherLocation by lazyDeferred {

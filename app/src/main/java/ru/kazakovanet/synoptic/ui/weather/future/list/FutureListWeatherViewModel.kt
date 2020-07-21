@@ -19,8 +19,10 @@ class FutureListWeatherViewModel(
         get() = unitSystem == UnitSystem.METRIC
 
     val weatherEntries by lazyDeferred {
-        repository.getFutureWeatherList(LocalDate.now(),
-            unitSystem.name.toLowerCase(Locale.getDefault()))
+        repository.getFutureWeatherList(
+            LocalDate.now(),
+            unitSystem.name.toLowerCase(Locale.getDefault())
+        )
     }
 
     val weatherLocation by lazyDeferred {

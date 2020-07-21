@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.yahoo_api_authenticate_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -52,14 +50,6 @@ class YahooAPIAuthenticateFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (activity as? AppCompatActivity)?.supportActionBar?.setHomeButtonEnabled(false)
-
-        if (viewModel.isAccessTokenReceived()) {
-            showCurrentWeather(webView)
-            return@launch
-        }
-
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 webView: WebView,
@@ -79,8 +69,7 @@ class YahooAPIAuthenticateFragment : ScopedFragment(), KodeinAware {
                     viewModel.changeCodeToAccessToken(code)
 
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Tada", Toast.LENGTH_SHORT).show()
-                        showCurrentWeather(webView)
+                        findNavController().popBackStack()
                     }
                 }
 
@@ -103,10 +92,5 @@ class YahooAPIAuthenticateFragment : ScopedFragment(), KodeinAware {
                 "&redirect_uri=$REDIRECT_URI" +
                 "&response_type=code" +
                 "&language=en-us"
-    }
-
-    private fun showCurrentWeather(view: View) {
-        val actionCurrent = YahooAPIAuthenticateFragmentDirections.actionCurrent()
-        Navigation.findNavController(view).navigate(actionCurrent)
     }
 }

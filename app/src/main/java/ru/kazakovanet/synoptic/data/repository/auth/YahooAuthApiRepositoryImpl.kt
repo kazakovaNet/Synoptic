@@ -1,6 +1,5 @@
 package ru.kazakovanet.synoptic.data.repository.auth
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
