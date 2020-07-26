@@ -55,7 +55,7 @@ class LocationProviderImpl(
 
         val comparisonThreshold = 0.03
         return Math.abs(deviceLocation.latitude - location.lat) > comparisonThreshold &&
-                Math.abs(deviceLocation.longitude - location.long) > comparisonThreshold
+                Math.abs(deviceLocation.longitude - location.lon) > comparisonThreshold
     }
 
     private fun hasCustomLocationChanged(location: YahooLocationEntity?): Boolean {

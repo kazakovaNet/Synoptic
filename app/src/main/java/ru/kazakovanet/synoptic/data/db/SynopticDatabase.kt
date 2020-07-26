@@ -24,8 +24,8 @@ import ru.kazakovanet.synoptic.data.db.entity.*
         FutureWeatherLocation::class,
         AccessTokenEntity::class,
         YahooWeatherEntity::class,
-        YahooLocationEntity::class,
-        YahooForecastEntity::class
+        YahooForecastEntity::class,
+        YahooLocationEntity::class
     ],
     version = 1
 )

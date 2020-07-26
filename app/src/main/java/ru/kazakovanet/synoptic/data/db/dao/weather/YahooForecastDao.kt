@@ -1,6 +1,7 @@
 package ru.kazakovanet.synoptic.data.db.dao.weather
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -9,6 +10,7 @@ import ru.kazakovanet.synoptic.data.db.entity.YahooForecastEntity
 /**
  * Created by NKazakova on 24.07.2020.
  */
+@Dao
 interface YahooForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsert(list: List<YahooForecastEntity>)

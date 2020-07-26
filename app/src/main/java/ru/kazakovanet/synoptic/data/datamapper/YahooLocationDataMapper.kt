@@ -12,7 +12,7 @@ object YahooLocationDataMapper {
             city = dto.city,
             country = dto.country,
             lat = dto.lat,
-            long = dto.long,
+            lon = dto.long,
             region = dto.region,
             timezoneId = dto.timezoneId,
             localtimeEpoch = System.currentTimeMillis()

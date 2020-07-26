@@ -17,7 +17,7 @@ data class YahooLocationEntity(
     val city: String,
     val country: String,
     val lat: Double,
-    val long: Double,
+    val lon: Double,
     val region: String,
     @ColumnInfo(name = "timezone_id")
     val timezoneId: String,
