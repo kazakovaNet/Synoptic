@@ -1,5 +1,6 @@
 package ru.kazakovanet.synoptic.data.network.api.yahoo
 
+import android.util.Base64
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -7,45 +8,44 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
-import ru.kazakovanet.synoptic.data.db.dao.auth.AccessTokenDao
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
-import ru.kazakovanet.synoptic.data.network.api.BASE_WEATHER_URL
-import ru.kazakovanet.synoptic.data.network.api.dto.weather.YahooWeatherResponseDTO
-import ru.kazakovanet.synoptic.internal.AccessTokenNotFoundException
+import ru.kazakovanet.synoptic.data.network.api.BASE_AUTH_URL
+import ru.kazakovanet.synoptic.data.network.api.CLIENT_ID
+import ru.kazakovanet.synoptic.data.network.api.CLIENT_SECRET
+import ru.kazakovanet.synoptic.data.network.api.dto.auth.AccessTokenDTO
 
 /**
  * Created by NKazakova on 11.07.2020.
  */
-const val FORMAT_JSON = "json"
 
-interface YahooWeatherApiService {
+interface YahooAuthApiService {
 
-    @GET("forecastrss")
-    fun getWeather(
-        @Query("location") location: String,
-        @Query("u") units: String
-    ): Deferred<YahooWeatherResponseDTO>
+    @FormUrlEncoded
+    @POST("get_token")
+    fun getAccessToken(
+        @FieldMap fields: Map<String, String>
+    ): Deferred<AccessTokenDTO>
 
     companion object {
         operator fun invoke(
-            connectivityInterceptor: ConnectivityInterceptor,
-            accessTokenDao: AccessTokenDao
-        ): YahooWeatherApiService {
+            connectivityInterceptor: ConnectivityInterceptor
+        ): YahooAuthApiService {
             val requestInterceptor = Interceptor { chain ->
                 val url = chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter("format", FORMAT_JSON)
                     .build()
 
-                val accessToken =
-                    accessTokenDao.getAccessTokenNonLive() ?: throw AccessTokenNotFoundException()
+                val base64Encoded =
+                    Base64.encodeToString("$CLIENT_ID:$CLIENT_SECRET".toByteArray(), Base64.NO_WRAP)
                 val request = chain.request()
                     .newBuilder()
                     .url(url)
-                    .header("Authorization", "Bearer ${accessToken.accessToken}")
+                    .header("Accept", "application/json")
+                    .header("Authorization", "Basic $base64Encoded")
                     .build()
                 return@Interceptor chain.proceed(request)
             }
@@ -60,11 +60,11 @@ interface YahooWeatherApiService {
 
             return Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(BASE_WEATHER_URL)
+                .baseUrl(BASE_AUTH_URL)
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(YahooWeatherApiService::class.java)
+                .create(YahooAuthApiService::class.java)
         }
     }
 }

@@ -19,7 +19,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import ru.kazakovanet.synoptic.R
-import ru.kazakovanet.synoptic.data.network.api.AUTH_URL
+import ru.kazakovanet.synoptic.data.network.api.BASE_AUTH_URL
 import ru.kazakovanet.synoptic.data.network.api.CLIENT_ID
 import ru.kazakovanet.synoptic.data.network.api.REDIRECT_URI
 import ru.kazakovanet.synoptic.internal.AuthCodeNotFoundException
@@ -87,7 +87,7 @@ class YahooAPIAuthenticateFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun getAuthUrl(): String {
-        return "${AUTH_URL}request_auth" +
+        return "${BASE_AUTH_URL}request_auth" +
                 "?client_id=$CLIENT_ID" +
                 "&redirect_uri=$REDIRECT_URI" +
                 "&response_type=code" +

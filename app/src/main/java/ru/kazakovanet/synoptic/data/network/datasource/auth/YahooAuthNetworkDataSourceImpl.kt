@@ -5,12 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.kazakovanet.synoptic.data.network.api.GRANT_TYPE
 import ru.kazakovanet.synoptic.data.network.api.REDIRECT_URI
-import ru.kazakovanet.synoptic.data.network.api.dto.AccessTokenDTO
-import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooWeatherApiService
+import ru.kazakovanet.synoptic.data.network.api.dto.auth.AccessTokenDTO
+import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooAuthApiService
 import ru.kazakovanet.synoptic.internal.NoConnectivityException
 
 class YahooAuthNetworkDataSourceImpl(
-    private val yahooWeatherApiService: YahooWeatherApiService
+    private val yahooAuthApiService: YahooAuthApiService
 ) : YahooAuthNetworkDataSource {
 
     private val _accessToken = MutableLiveData<AccessTokenDTO>()
@@ -24,7 +24,7 @@ class YahooAuthNetworkDataSourceImpl(
                 Pair("grant_type", GRANT_TYPE),
                 Pair("code", code)
             )
-            val accessToken = yahooWeatherApiService.getAccessToken(fieldMap).await()
+            val accessToken = yahooAuthApiService.getAccessToken(fieldMap).await()
             _accessToken.postValue(accessToken)
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection", e)

@@ -13,3 +13,5 @@ class LocationPermissionNotGrantedException : Exception()
 class DateNotFoundException : Exception()
 
 class AuthCodeNotFoundException : Exception()
+
+class AccessTokenNotFoundException : Exception()

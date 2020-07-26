@@ -69,7 +69,7 @@ class FutureWeatherRepositoryImpl(
     private suspend fun initWeatherData(unitSystem: String) {
         val location = futureWeatherLocationDao.getLocationNonLive()
 
-        if (location == null || locationProvider.hasLocationChanged(location)) {
+        if (location == null /*|| locationProvider.hasLocationChanged(location)*/) {
             fetchFutureWeather(unitSystem)
             return
         }

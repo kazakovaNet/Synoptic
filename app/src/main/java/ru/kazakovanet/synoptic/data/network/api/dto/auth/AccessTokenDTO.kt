@@ -1,4 +1,4 @@
-package ru.kazakovanet.synoptic.data.network.api.dto
+package ru.kazakovanet.synoptic.data.network.api.dto.auth
 
 import com.google.gson.annotations.SerializedName
 

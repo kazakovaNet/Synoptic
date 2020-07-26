@@ -99,21 +99,6 @@
         tools:text="25.0°C" />
 
     <TextView
-        android:id="@+id/textView_feels_like_temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView_temperature"
-        app:layout_constraintHorizontal_bias="0.423"
-        app:layout_constraintStart_toStartOf="@+id/textView_temperature"
-        app:layout_constraintTop_toBottomOf="@+id/textView_temperature"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Feels like 20.4°C" />
-
-    <TextView
         android:id="@+id/textView_wind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,7 +116,7 @@
         tools:text="Wind: SE, 5.3 m/s" />
 
     <TextView
-        android:id="@+id/textView_precipitation"
+        android:id="@+id/textView_humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -145,7 +130,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_wind"
         app:layout_constraintVertical_bias="0.0"
-        tools:text="Precipitation: 5 mm" />
+        tools:text="Humidity: 76%" />
 
     <TextView
         android:id="@+id/textView_visibility"
@@ -160,7 +145,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.031"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_precipitation"
+        app:layout_constraintTop_toBottomOf="@+id/textView_humidity"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Visibility: 20 km" />
 

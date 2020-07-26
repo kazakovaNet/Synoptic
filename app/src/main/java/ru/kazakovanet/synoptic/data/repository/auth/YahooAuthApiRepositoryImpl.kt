@@ -1,12 +1,13 @@
 package ru.kazakovanet.synoptic.data.repository.auth
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kazakovanet.synoptic.data.datamapper.AccessTokenDataMapper
 import ru.kazakovanet.synoptic.data.db.dao.auth.AccessTokenDao
-import ru.kazakovanet.synoptic.data.network.api.dto.AccessTokenDTO
+import ru.kazakovanet.synoptic.data.network.api.dto.auth.AccessTokenDTO
 import ru.kazakovanet.synoptic.data.network.datasource.auth.YahooAuthNetworkDataSource
 
 class YahooAuthApiRepositoryImpl(
@@ -16,14 +17,14 @@ class YahooAuthApiRepositoryImpl(
 
     init {
         dataSource.accessToken.observeForever { newAccessToken ->
+            Log.d("Yahoo", "Token:  ${newAccessToken.accessToken}")
             persistAccessToken(newAccessToken)
         }
     }
 
-    override suspend fun getAccessToken(code: String): Boolean {
+    override suspend fun getAccessToken(code: String) {
         return withContext(Dispatchers.IO) {
             initAccessData(code)
-            true
         }
     }
 
