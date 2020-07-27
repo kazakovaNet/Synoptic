@@ -10,7 +10,7 @@ interface YahooWeatherNetworkDataSource {
     val downloadedWeather: LiveData<YahooWeatherResponseDTO>
 
     suspend fun fetchWeather(
-        location: String,
+        location: Map<String, String>,
         units: String
     )
 }

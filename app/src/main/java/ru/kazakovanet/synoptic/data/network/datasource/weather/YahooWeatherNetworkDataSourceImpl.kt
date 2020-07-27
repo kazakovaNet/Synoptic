@@ -15,9 +15,18 @@ class YahooWeatherNetworkDataSourceImpl(
     override val downloadedWeather: LiveData<YahooWeatherResponseDTO>
         get() = _downloadedWeather
 
-    override suspend fun fetchWeather(location: String, units: String) {
+    override suspend fun fetchWeather(location: Map<String, String>, units: String) {
         try {
-            val fetchedCurrentWeather = apiService.getWeather(location, units).await()
+            val fetchedCurrentWeather: YahooWeatherResponseDTO =
+                if (location.containsKey("location")) {
+                    apiService.getWeatherByLocation(location.getValue("location"), units).await()
+                } else {
+                    apiService.getWeatherByLatLon(
+                        location.getValue("lat"),
+                        location.getValue("lon"),
+                        units
+                    ).await()
+                }
             _downloadedWeather.postValue(fetchedCurrentWeather)
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection", e)

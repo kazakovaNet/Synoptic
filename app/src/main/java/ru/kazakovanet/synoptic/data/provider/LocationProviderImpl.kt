@@ -32,17 +32,28 @@ class LocationProviderImpl(
         return deviceLocationChanged || hasCustomLocationChanged(location as? YahooLocationEntity)
     }
 
-    override suspend fun getPreferredLocationString(): String {
+    override suspend fun getPreferredLocationString(): Map<String, String> {
+        val map = mutableMapOf<String, String>()
         if (isUsingDeviceLocation()) {
-            try {
-                val deviceLocation = getLastDeviceLocation().await()
-                    ?: return "${getCustomLocationName()}"
-                return "${deviceLocation.latitude},${deviceLocation.longitude}"
+            return try {
+                when (val deviceLocation = getLastDeviceLocation().await()) {
+                    null -> {
+                        map["location"] = "${getCustomLocationName()}"
+                    }
+                    else -> {
+                        map["lat"] = "${deviceLocation.latitude}"
+                        map["lon"] = "${deviceLocation.longitude}"
+                    }
+                }
+                map
             } catch (e: LocationPermissionNotGrantedException) {
-                return "${getCustomLocationName()}"
+                map["location"] = "${getCustomLocationName()}"
+                map
             }
-        } else
-            return "${getCustomLocationName()}"
+        } else {
+            map["location"] = "${getCustomLocationName()}"
+            return map
+        }
     }
 
     private suspend fun hasDeviceLocationChanged(location: YahooLocationEntity): Boolean {

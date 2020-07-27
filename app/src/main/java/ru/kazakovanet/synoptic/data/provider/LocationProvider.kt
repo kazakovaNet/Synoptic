@@ -7,5 +7,5 @@ import ru.kazakovanet.synoptic.data.db.entity.YahooLocationEntity
  */
 interface LocationProvider {
     suspend fun hasLocationChanged(location: YahooLocationEntity): Boolean
-    suspend fun getPreferredLocationString(): String
+    suspend fun getPreferredLocationString(): Map<String, String>
 }

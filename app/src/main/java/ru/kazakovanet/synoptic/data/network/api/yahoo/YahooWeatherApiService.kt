@@ -23,8 +23,15 @@ const val FORMAT_JSON = "json"
 interface YahooWeatherApiService {
 
     @GET("forecastrss")
-    fun getWeather(
+    fun getWeatherByLocation(
         @Query("location") location: String,
+        @Query("u") units: String
+    ): Deferred<YahooWeatherResponseDTO>
+
+    @GET("forecastrss")
+    fun getWeatherByLatLon(
+        @Query("lat") lat: String,
+        @Query("lon") lon: String,
         @Query("u") units: String
     ): Deferred<YahooWeatherResponseDTO>
 
