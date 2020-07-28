@@ -14,15 +14,12 @@ import ru.kazakovanet.synoptic.data.db.SynopticDatabase
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptor
 import ru.kazakovanet.synoptic.data.network.ConnectivityInterceptorImpl
 import ru.kazakovanet.synoptic.data.network.api.openweathermap.OpenWeatherMapApiService
-import ru.kazakovanet.synoptic.data.network.api.weatherstack.WeatherStackApiService
 import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooAuthApiService
 import ru.kazakovanet.synoptic.data.network.api.yahoo.YahooWeatherApiService
 import ru.kazakovanet.synoptic.data.network.datasource.auth.YahooAuthNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.datasource.auth.YahooAuthNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.network.datasource.weather.YahooWeatherNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.datasource.weather.YahooWeatherNetworkDataSourceImpl
-import ru.kazakovanet.synoptic.data.network.datasource.weather.current.CurrentWeatherNetworkDataSource
-import ru.kazakovanet.synoptic.data.network.datasource.weather.current.CurrentWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.network.datasource.weather.future.FutureWeatherNetworkDataSource
 import ru.kazakovanet.synoptic.data.network.datasource.weather.future.FutureWeatherNetworkDataSourceImpl
 import ru.kazakovanet.synoptic.data.provider.LocationProvider
@@ -58,9 +55,7 @@ class SynopticApplication : Application(), KodeinAware {
         }
 
         // DAO
-        bind() from singleton { instance<SynopticDatabase>().currentWeatherDao() }
         bind() from singleton { instance<SynopticDatabase>().futureWeatherDao() }
-        bind() from singleton { instance<SynopticDatabase>().weatherLocationDao() }
         bind() from singleton { instance<SynopticDatabase>().futureWeatherLocationDao() }
         bind() from singleton { instance<SynopticDatabase>().accessTokenDao() }
         bind() from singleton { instance<SynopticDatabase>().yahooCurrentWeatherDao() }
@@ -71,7 +66,6 @@ class SynopticApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(context = instance()) }
 
         // ApiService
-        bind() from singleton { WeatherStackApiService(connectivityInterceptor = instance()) }
         bind() from singleton { OpenWeatherMapApiService(connectivityInterceptor = instance()) }
         bind() from singleton { YahooAuthApiService(connectivityInterceptor = instance()) }
         bind() from singleton {
@@ -82,11 +76,6 @@ class SynopticApplication : Application(), KodeinAware {
         }
 
         // Data Source
-        bind<CurrentWeatherNetworkDataSource>() with singleton {
-            CurrentWeatherNetworkDataSourceImpl(
-                weatherStackApiService = instance()
-            )
-        }
         bind<FutureWeatherNetworkDataSource>() with singleton {
             FutureWeatherNetworkDataSourceImpl(
                 openWeatherMapApiService = instance()

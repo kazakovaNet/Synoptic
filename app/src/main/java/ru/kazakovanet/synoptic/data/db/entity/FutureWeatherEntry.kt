@@ -1,14 +1,15 @@
 package ru.kazakovanet.synoptic.data.db.entity
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
-import ru.kazakovanet.synoptic.data.db.WeatherListToSingleItemConverter
 
 @Entity(tableName = "future_weather", indices = [Index(value = ["date"], unique = true)])
-@TypeConverters(WeatherListToSingleItemConverter::class)
 data class FutureWeatherEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Int?,
@@ -35,9 +36,6 @@ data class FutureWeatherEntry(
     val temp: Temp,
 
     val uvi: Double,
-
-//    @Embedded(prefix = "weather_description_")
-//    val weather: List<Weather>,
 
     @SerializedName("wind_deg")
     val windDeg: Int,

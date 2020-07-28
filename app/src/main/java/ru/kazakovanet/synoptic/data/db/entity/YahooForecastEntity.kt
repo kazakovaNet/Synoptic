@@ -17,6 +17,4 @@ data class YahooForecastEntity(
     val high: Int,
     val low: Int,
     val text: String
-) {
-
-}
+)

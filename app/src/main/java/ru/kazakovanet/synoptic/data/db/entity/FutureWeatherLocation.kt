@@ -15,15 +15,15 @@ const val FUTURE_WEATHER_LOCATION_ID = 0
 
 @Entity(tableName = "future_weather_location")
 data class FutureWeatherLocation(
-    override val lat: Double,
-    override val lon: Double,
+    val lat: Double,
+    val lon: Double,
     val timezoneId: String,
     val timezoneOffset: Int
-) : WeatherLocation {
+) {
     @PrimaryKey(autoGenerate = false)
     var id: Int = FUTURE_WEATHER_LOCATION_ID
 
-    override val zonedDateTime: ZonedDateTime
+    val zonedDateTime: ZonedDateTime
         get() {
             val dateTime = LocalDateTime.now(ZoneId.of(timezoneId))
             val zoneId = ZoneId.of(timezoneId)

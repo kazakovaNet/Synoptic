@@ -14,6 +14,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import ru.kazakovanet.synoptic.R
+import ru.kazakovanet.synoptic.data.network.api.BASE_WEATHER_IMAGE_URL
 import ru.kazakovanet.synoptic.internal.glide.GlideApp
 import ru.kazakovanet.synoptic.ui.base.ScopedFragment
 
@@ -66,10 +67,12 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
             updateHumidity(it.humidity)
             updateWind(it.windSpeed)
             updateVisibility(it.visibility)
+            updatePressure(it.pressure, it.rising)
+            updateSunriseSunset(it.sunrise, it.sunset)
 
-//            GlideApp.with(this@CurrentWeatherFragment)
-//                .load(if (it.icon.isNotEmpty()) it.icon[0] else "")
-//                .into(imageView_condition_icon)
+            GlideApp.with(this@CurrentWeatherFragment)
+                .load("$BASE_WEATHER_IMAGE_URL${it.conditionCode}.gif")
+                .into(imageView_condition_icon)
         })
     }
 
@@ -109,7 +112,21 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun updateVisibility(visibilityDistance: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation("km", "mi.")
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation("km", "mi")
         textView_visibility.text = "Visibility: $visibilityDistance $unitAbbreviation"
+    }
+
+    private fun updatePressure(pressure: Double, rising: Int) {
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation("mbar", "ih")
+        textView_pressure.text = "Pressure: $pressure $unitAbbreviation"
+        val resourceId =
+            resources.getIdentifier("drawable/pressure_icon_$rising", null, context?.packageName)
+
+        imageView_pressure_icon.setImageDrawable(context?.getDrawable(resourceId))
+    }
+
+    private fun updateSunriseSunset(sunrise: String, sunset: String) {
+        textView_sunrise.text = "Sunrise: $sunrise"
+        textView_sunset.text = "Sunset: $sunset"
     }
 }

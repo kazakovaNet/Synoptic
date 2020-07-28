@@ -57,7 +57,7 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.017"
@@ -112,7 +112,7 @@
         app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.542"
+        app:layout_constraintVertical_bias="0.485"
         tools:text="Wind: SE, 5.3 m/s" />
 
     <TextView
@@ -148,5 +148,70 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_humidity"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Visibility: 20 km" />
+
+    <TextView
+        android:id="@+id/textView_pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_visibility"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Pressure: 20 km" />
+
+    <ImageView
+        android:id="@+id/imageView_pressure_icon"
+        android:layout_width="48dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_pressure"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toEndOf="@+id/textView_pressure"
+        app:layout_constraintTop_toTopOf="@+id/textView_pressure"
+        app:layout_constraintVertical_bias="0.701"
+        app:layout_constraintWidth_percent="0.15"
+        tools:src="@drawable/pressure_icon_0" />
+
+    <TextView
+        android:id="@+id/textView_sunrise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_pressure"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Sunrise: 7:23 am" />
+
+    <TextView
+        android:id="@+id/textView_sunset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_sunrise"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Sunset: 5:7 pm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

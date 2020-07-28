@@ -6,8 +6,6 @@ import ru.kazakovanet.synoptic.data.db.dao.auth.AccessTokenDao
 import ru.kazakovanet.synoptic.data.db.dao.weather.YahooCurrentWeatherDao
 import ru.kazakovanet.synoptic.data.db.dao.weather.YahooForecastDao
 import ru.kazakovanet.synoptic.data.db.dao.weather.YahooLocationDao
-import ru.kazakovanet.synoptic.data.db.dao.weather.current.CurrentWeatherDao
-import ru.kazakovanet.synoptic.data.db.dao.weather.current.CurrentWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.dao.weather.future.FutureWeatherDao
 import ru.kazakovanet.synoptic.data.db.dao.weather.future.FutureWeatherLocationDao
 import ru.kazakovanet.synoptic.data.db.entity.*
@@ -18,9 +16,7 @@ import ru.kazakovanet.synoptic.data.db.entity.*
 
 @Database(
     entities = [
-        CurrentWeatherEntry::class,
         FutureWeatherEntry::class,
-        CurrentWeatherLocation::class,
         FutureWeatherLocation::class,
         AccessTokenEntity::class,
         YahooWeatherEntity::class,
@@ -30,9 +26,7 @@ import ru.kazakovanet.synoptic.data.db.entity.*
     version = 1
 )
 abstract class SynopticDatabase : RoomDatabase() {
-    abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun futureWeatherDao(): FutureWeatherDao
-    abstract fun weatherLocationDao(): CurrentWeatherLocationDao
     abstract fun futureWeatherLocationDao(): FutureWeatherLocationDao
     abstract fun accessTokenDao(): AccessTokenDao
     abstract fun yahooCurrentWeatherDao(): YahooCurrentWeatherDao

@@ -14,9 +14,9 @@ data class YahooWeatherEntity(
     val sunrise: String,
     val sunset: String,
     val humidity: Int, // влажность
-    val visibility: Double, // барометрическое давление
-    val pressure: Double, // состояние барометрического давления: устойчивое (0), повышающееся (1) или понижающееся (2)
-    val rising: Int, // видимость
+    val visibility: Double, // видимость
+    val pressure: Double, // барометрическое давление
+    val rising: Int, // состояние барометрического давления: устойчивое (0), повышающееся (1) или понижающееся (2)
     val temperature: Int,
     @ColumnInfo(name = "condition_code")
     val conditionCode: Int,

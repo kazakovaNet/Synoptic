@@ -108,6 +108,7 @@ class YahooWeatherRepositoryImpl(
     }
 
     private fun isFetchNeeded(lastFetchTime: ZonedDateTime): Boolean {
+        // TODO: 28.07.2020 change unit format
         val thirtyMinutesAgo = ZonedDateTime.now().minusMinutes(30)
         return lastFetchTime.isBefore(thirtyMinutesAgo)
     }

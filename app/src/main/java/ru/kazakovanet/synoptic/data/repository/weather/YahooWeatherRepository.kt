@@ -1,7 +1,6 @@
 package ru.kazakovanet.synoptic.data.repository.weather
 
 import androidx.lifecycle.LiveData
-import ru.kazakovanet.synoptic.data.db.entity.CurrentWeatherLocation
 import ru.kazakovanet.synoptic.data.db.entity.YahooForecastEntity
 import ru.kazakovanet.synoptic.data.db.entity.YahooLocationEntity
 import ru.kazakovanet.synoptic.data.db.entity.YahooWeatherEntity
