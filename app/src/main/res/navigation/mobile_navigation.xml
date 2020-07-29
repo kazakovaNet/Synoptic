@@ -8,33 +8,21 @@
     <fragment
         android:id="@+id/currentWeatherFragment"
         android:name="ru.kazakovanet.synoptic.ui.weather.current.CurrentWeatherFragment"
-        tools:layout="@layout/current_weather_fragment" >
+        tools:layout="@layout/current_weather_fragment">
         <action
             android:id="@+id/actionAuth"
-            app:destination="@id/yahooAPIAuthenticateFragment" />
+            app:destination="@id/authenticateFragment" />
     </fragment>
     <fragment
         android:id="@+id/futureListWeatherFragment"
-        android:name="ru.kazakovanet.synoptic.ui.weather.future.list.FutureListWeatherFragment"
-        tools:layout="@layout/future_list_weather_fragment" >
-        <action
-            android:id="@+id/actionDetail"
-            app:destination="@id/futureDetailWeatherFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/futureDetailWeatherFragment"
-        android:name="ru.kazakovanet.synoptic.ui.weather.future.detail.FutureDetailWeatherFragment"
-        tools:layout="@layout/future_detail_weather_fragment" >
-        <argument
-            android:name="dateLong"
-            app:argType="long" />
-    </fragment>
+        android:name="ru.kazakovanet.synoptic.ui.weather.forecast.ForecastWeatherFragment"
+        tools:layout="@layout/forecast_weather_fragment" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.kazakovanet.synoptic.ui.settings.SettingsFragment" />
     <fragment
-        android:id="@+id/yahooAPIAuthenticateFragment"
-        android:name="ru.kazakovanet.synoptic.ui.auth.YahooAPIAuthenticateFragment"
-        android:label="Yahoo Authenticate"
-        tools:layout="@layout/yahoo_api_authenticate_fragment"/>
+        android:id="@+id/authenticateFragment"
+        android:name="ru.kazakovanet.synoptic.ui.auth.AuthFragment"
+        android:label="Authenticate"
+        tools:layout="@layout/authenticate_fragment" />
 </navigation>

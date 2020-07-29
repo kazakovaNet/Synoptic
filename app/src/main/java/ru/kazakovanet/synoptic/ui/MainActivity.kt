@@ -19,8 +19,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 import ru.kazakovanet.synoptic.R
-import ru.kazakovanet.synoptic.data.repository.auth.YahooAuthApiRepository
-
 
 const val MY_PERMISSION_ACCESS_COARSE_LOCATION = 1
 
@@ -31,7 +29,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val locationCallback = object : LocationCallback() {
     }
     private lateinit var navController: NavController
-    private val repository: YahooAuthApiRepository by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +91,5 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                     Toast.LENGTH_SHORT
                 ).show()
         }
-
     }
 }

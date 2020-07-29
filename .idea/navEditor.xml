@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="authenticateFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="currentWeatherFragment">
                     <value>
                       <LayoutPositions>
@@ -19,24 +31,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_currentWeatherFragment_to_yahooAPIAuthenticateFragment">
+                            <entry key="actionAuth">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                           </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="futureDetailWeatherFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="368" />
-                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -50,15 +50,6 @@
                             <option name="y" value="368" />
                           </Point>
                         </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="actionDetail">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -68,18 +59,6 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="12" />
-                            <option name="y" value="12" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="yahooAPIAuthenticateFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="500" />
                             <option name="y" value="12" />
                           </Point>
                         </option>

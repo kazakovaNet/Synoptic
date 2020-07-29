@@ -8,7 +8,7 @@ import android.location.Location
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.Deferred
-import ru.kazakovanet.synoptic.data.db.entity.YahooLocationEntity
+import ru.kazakovanet.synoptic.data.db.entity.LocationEntity
 import ru.kazakovanet.synoptic.internal.LocationPermissionNotGrantedException
 import ru.kazakovanet.synoptic.internal.asDeferred
 
@@ -23,13 +23,13 @@ class LocationProviderImpl(
 
     private val appContext = context.applicationContext
 
-    override suspend fun hasLocationChanged(location: YahooLocationEntity): Boolean {
+    override suspend fun hasLocationChanged(location: LocationEntity): Boolean {
         val deviceLocationChanged = try {
             hasDeviceLocationChanged(location)
         } catch (e: LocationPermissionNotGrantedException) {
             false
         }
-        return deviceLocationChanged || hasCustomLocationChanged(location as? YahooLocationEntity)
+        return deviceLocationChanged || hasCustomLocationChanged(location as? LocationEntity)
     }
 
     override suspend fun getPreferredLocationString(): Map<String, String> {
@@ -56,7 +56,7 @@ class LocationProviderImpl(
         }
     }
 
-    private suspend fun hasDeviceLocationChanged(location: YahooLocationEntity): Boolean {
+    private suspend fun hasDeviceLocationChanged(location: LocationEntity): Boolean {
         if (!isUsingDeviceLocation()) {
             return false
         }
@@ -69,7 +69,7 @@ class LocationProviderImpl(
                 Math.abs(deviceLocation.longitude - location.lon) > comparisonThreshold
     }
 
-    private fun hasCustomLocationChanged(location: YahooLocationEntity?): Boolean {
+    private fun hasCustomLocationChanged(location: LocationEntity?): Boolean {
         if (location == null) return false
 
         if (!isUsingDeviceLocation()) {
